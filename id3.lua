@@ -1,12 +1,14 @@
 --[[  ID3 for binary data
 
+Generation of a decision tree based on the list of observations.
+
 Book: "Самообучающиеся системы", Николенко, Тулупьев
 Chapter: 1
-Input: samples/id3_data.lua
 
 2024, Stanislav Mikhel ]]
 
 
+local DATA_FILE = 'samples/id3_data.lua'
 local LOG2 = math.log(2)
 
 --- Find enthropy.
@@ -86,28 +88,25 @@ local function id3 (arr, ntab, visited)
       end
     end
   end
-  local majority = nil
-  do 
-    -- current goal status
-    local a, b, x, y = split(arr, arr.goal)
-    majority = (#a > #b) and x or y
-  end
-  local disp = string.rep(' ', 2*ntab)
+  -- current goal status
+  local a, b, x, y = split(arr, arr.goal)
+  local majority = (#a > #b) and x or y
+  local disp = (' '):rep(2*ntab)
   if max == 0 then 
-    return print(disp .. majority)
+    return print( disp .. majority )
   end
   upd[max] = true
   -- show tree
-  local a, b, x, y = split(arr, max)
-  print(disp .. string.format('%s=%s', arr.names[max], x))
+  a, b, x, y = split(arr, max)
+  print( disp .. ('%s=%s'):format(arr.names[max], x) )
   if #a == 0 then
-    print(disp .. majority)
+    print( disp .. majority )
   else
     id3(a, ntab+1, upd)
   end
-  print(disp .. string.format('%s=%s', arr.names[max], y))
+  print( disp .. ('%s=%s'):format(arr.names[max], y) )
   if #b == 0 then
-    print(disp .. majority)
+    print( disp .. majority )
   else
     id3(b, ntab+1, upd)
   end
@@ -119,7 +118,8 @@ end
 local function load_and_check (fname)
   local gen = loadfile(fname)
   local data = gen()
-  assert(data and data.names and data.goal and data.names[data.goal], "Wrong data structure")
+  assert(data and data.names and data.goal and data.names[data.goal], 
+    "Wrong data structure")
   assert(#data > 0, "Wrong table len")
   local n = #data.names
   for i = 1, n do
@@ -131,7 +131,7 @@ local function load_and_check (fname)
       end
     end
     assert(k == 2, 
-      string.format('Extected 2 values for parameter %s, found %d', data.names[i], k))
+      ('Extected 2 values for parameter %s, found %d'):format(data.names[i], k))
   end
   return data
 end
@@ -139,10 +139,11 @@ end
 --==========================
 
 
-local input = load_and_check('samples/id3_data.lua')
+local input = load_and_check(DATA_FILE)
 
-print(string.format('%s = ?\n', input.names[input.goal]))
+-- main criteria
+print( ('%s = ?\n'):format(input.names[input.goal]) )
 
-local visited = {[input.goal] = true}
-id3(input, 0, visited)
+-- show tree
+id3(input, 0, {[input.goal] = true})
 
