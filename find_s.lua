@@ -32,7 +32,7 @@ end
 --  @param arr data list.
 --  @param val goal state.
 --  @return parameter status list and parameter index list.
-local function find_s (arr, val)
+function find_s (arr, val)
   -- filter
   local tests, ids = positive(arr, val)
   local hyp = {}
@@ -58,7 +58,7 @@ end
 --- Read input file, check data.
 --  @param fname file name to read.
 --  @return Lua table with data.
-local function load_and_check (fname)
+function load_and_check (fname)
   local gen = loadfile(fname)
   local data = gen()
   assert(data and data.names and data.goal and data.names[data.goal], 
@@ -82,16 +82,18 @@ end
 --==========================
 
 
-local input = load_and_check(DATA_FILE)
+function main ()
+  local input = load_and_check(DATA_FILE)
+  -- search
+  local goal_val = input[1][input.goal]
+  local hyp, ids = find_s(input, goal_val)
+  -- names
+  local names = {}
+  for i, id in ipairs(ids) do names[i] = input.names[id] end
+  print( ('(%s)'):format(table.concat(names, '|')) )
+  -- show result
+  print( ('(%s)'):format(table.concat(hyp, ', ')) )
+end
 
--- search
-local goal_val = input[1][input.goal]
-local hyp, ids = find_s(input, goal_val)
-
--- names
-local names = {}
-for i, id in ipairs(ids) do names[i] = input.names[id] end
-print( ('(%s)'):format(table.concat(names, '|')) )
--- show result
-print( ('(%s)'):format(table.concat(hyp, ', ')) )
+main()
 

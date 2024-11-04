@@ -74,7 +74,7 @@ end
 --  @param arr     data array.
 --  @param ntab    number of displacement steps.
 --  @param visited list of used criteria.
-local function id3 (arr, ntab, visited)
+function id3 (arr, ntab, visited)
   local upd = {}
   local max, val = 0, 0
   for i = 1, #arr[1] do
@@ -115,7 +115,7 @@ end
 --- Read input file, check data.
 --  @param fname file name to read.
 --  @return Lua table with data.
-local function load_and_check (fname)
+function load_and_check (fname)
   local gen = loadfile(fname)
   local data = gen()
   assert(data and data.names and data.goal and data.names[data.goal], 
@@ -139,11 +139,12 @@ end
 --==========================
 
 
-local input = load_and_check(DATA_FILE)
+function main ()
+  local input = load_and_check(DATA_FILE)
+  -- main criteria
+  print( ('%s = ?\n'):format(input.names[input.goal]) )
+  -- show tree
+  id3(input, 0, {[input.goal] = true})
+end
 
--- main criteria
-print( ('%s = ?\n'):format(input.names[input.goal]) )
-
--- show tree
-id3(input, 0, {[input.goal] = true})
-
+main()
