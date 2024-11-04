@@ -79,10 +79,9 @@ function load_and_check (fname)
   return data
 end
 
---==========================
 
-
-function main ()
+-- ======= main logic =======
+if arg[0] == 'find_s.lua' then
   local input = load_and_check(DATA_FILE)
   -- search
   local goal_val = input[1][input.goal]
@@ -94,6 +93,4 @@ function main ()
   -- show result
   print( ('(%s)'):format(table.concat(hyp, ', ')) )
 end
-
-main()
 

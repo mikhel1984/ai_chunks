@@ -136,10 +136,9 @@ function load_and_check (fname)
   return data
 end
 
---==========================
 
-
-function main ()
+-- ======== main logic =========
+if arg[0] == 'id3.lua' then
   local input = load_and_check(DATA_FILE)
   -- main criteria
   print( ('%s = ?\n'):format(input.names[input.goal]) )
@@ -147,4 +146,3 @@ function main ()
   id3(input, 0, {[input.goal] = true})
 end
 
-main()
