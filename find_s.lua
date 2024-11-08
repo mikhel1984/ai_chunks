@@ -80,8 +80,9 @@ function load_and_check (fname)
 end
 
 
--- ======= main logic =======
-if arg[0] == 'find_s.lua' then
+-- execute
+if  arg[0] == 'find_s.lua' 
+then
   local input = load_and_check(DATA_FILE)
   -- search
   local goal_val = input[1][input.goal]

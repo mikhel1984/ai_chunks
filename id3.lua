@@ -137,8 +137,9 @@ function load_and_check (fname)
 end
 
 
--- ======== main logic =========
-if arg[0] == 'id3.lua' then
+-- execute
+if  arg[0] == 'id3.lua' 
+then
   local input = load_and_check(DATA_FILE)
   -- main criteria
   print( ('%s = ?\n'):format(input.names[input.goal]) )
